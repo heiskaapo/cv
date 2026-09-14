@@ -3,7 +3,8 @@
 Output goes to the repository root (index.html, fi.html, media/, pdf/).
 Run: python tools/build.py
 """
-import hashlib, html, json, os, re, shutil, subprocess, sys
+import html, json, re, shutil, subprocess
+from datetime import date
 from pathlib import Path
 
 from PIL import Image, ImageOps
@@ -19,16 +20,22 @@ VIDEO_EXT = {".mp4", ".mov", ".m4v", ".webm"}
 
 UI = {
     "en": {
-        "lang_name": "English", "other": "fi", "other_label": "Suomeksi", "file": "index.html",
-        "pdf": "Download PDF", "gallery": "Projects in photos and videos",
-        "gallery_intro": "Photos and videos of my projects and work. Click an item to view it larger.",
-        "cv_nav": "CV", "close": "Close", "updated": "Updated",
+        "other": "fi", "other_label": "Suomeksi", "file": "index.html",
+        "pdf": "Download PDF", "work_nav": "Work", "work": "My work at a glance",
+        "work_hint_desktop": "Scroll sideways or use the arrows · click to open",
+        "work_hint_mobile": "Swipe sideways · tap to open",
+        "full_cv": "Full CV", "close": "Close", "prev": "Previous", "next": "Next",
+        "keys": "Use ← → keys to browse · Esc to close", "swipe": "Swipe to browse",
+        "updated": "Updated", "role": "Electronics & robotics · Aalto University",
     },
     "fi": {
-        "lang_name": "Suomi", "other": "en", "other_label": "In English", "file": "fi.html",
-        "pdf": "Lataa PDF", "gallery": "Projektit kuvina ja videoina",
-        "gallery_intro": "Kuvia ja videoita projekteistani ja töistäni. Klikkaa kohdetta nähdäksesi sen isompana.",
-        "cv_nav": "CV", "close": "Sulje", "updated": "Päivitetty",
+        "other": "en", "other_label": "In English", "file": "fi.html",
+        "pdf": "Lataa PDF", "work_nav": "Työt", "work": "Työni pähkinänkuoressa",
+        "work_hint_desktop": "Selaa sivuttain tai nuolilla · klikkaa avataksesi",
+        "work_hint_mobile": "Pyyhkäise sivuttain · napauta avataksesi",
+        "full_cv": "Koko CV", "close": "Sulje", "prev": "Edellinen", "next": "Seuraava",
+        "keys": "Selaa ← → -näppäimillä · Esc sulkee", "swipe": "Pyyhkäise selataksesi",
+        "updated": "Päivitetty", "role": "Elektroniikka & robotiikka · Aalto-yliopisto",
     },
 }
 
@@ -51,7 +58,6 @@ def slug(text):
 
 
 def markdown_to_html(md, photo_src):
-    lines = md.splitlines()
     parts, para, quote, items = [], [], [], []
     skipping = False
 
@@ -78,7 +84,7 @@ def markdown_to_html(md, photo_src):
             parts.append(out + ("</ul>" if sub_open else "") + "</li></ul>")
         para, quote, items = [], [], []
 
-    for line in lines:
+    for line in md.splitlines():
         s = line.strip()
         heading = re.match(r"(#{1,4}) (.*)", s)
         if heading and len(heading.group(1)) <= 2:
@@ -107,7 +113,6 @@ def markdown_to_html(md, photo_src):
             para.append(s)
     flush()
 
-    # drop trailing separators left behind by hidden sections
     while parts and parts[-1] == "<hr>":
         parts.pop()
     return "\n".join(parts)
@@ -116,6 +121,21 @@ def markdown_to_html(md, photo_src):
 def photo_path(md):
     m = re.search(r"!\[[^\]]*\]\((.+?)\)", md)
     return Path(m.group(1)) if m else None
+
+
+def split_cv(body):
+    """Intro = title, portrait, contacts and summary (up to the second <hr>); rest = the other sections."""
+    hrs = [m.start() for m in re.finditer(r"<hr>", body)]
+    cut = hrs[1] if len(hrs) > 1 else len(body)
+    intro, rest = body[:cut], body[cut + 4:]
+    contacts = re.search(r"<ul>.*?</ul>", intro, re.S)
+    summary = re.findall(r"<p>(.*?)</p>", intro, re.S)
+    sections = []
+    for part in rest.split("<hr>"):
+        m = re.search(r"<h2[^>]*>(.*?)</h2>", part)
+        if m:
+            sections.append((m.group(1), part.replace(m.group(0), "", 1).strip()))
+    return intro, rest, (contacts.group(0) if contacts else ""), (summary[-1] if summary else ""), sections
 
 
 # ---------------------------------------------------------------- media
@@ -164,11 +184,9 @@ def build_media():
             t.save(thumb, "JPEG", quality=80, optimize=True, progressive=True)
             cache[src.name] = key
 
-        w, h = Image.open(thumb).size
         items.append({
             "name": src.stem, "video": is_video, "src": f"media/{out.name}",
             "thumb": f"media/{thumb.name}", "poster": f"media/{poster.name}" if is_video else None,
-            "ratio": w / h,
         })
 
     for old in MEDIA_OUT.iterdir():
@@ -177,10 +195,12 @@ def build_media():
     cache = {k: v for k, v in cache.items() if k in {s.name for s in sources}}
     CACHE_FILE.write_text(json.dumps(cache, indent=2), encoding="utf-8")
 
-    order = CONFIG.get("gallery_order", [])
-    rank = {n: i for i, n in enumerate(order)}
-    # new files not listed in gallery_order go first (newest additions on top)
-    items.sort(key=lambda it: (rank.get(it["name"], -1), it["name"]))
+    listed = {g["file"]: (i, g) for i, g in enumerate(CONFIG.get("gallery", []))}
+    for it in items:
+        rank, meta = listed.get(it["name"], (-1, {}))
+        it["rank"], it["meta"] = rank, meta
+    # files not listed in config go first (newest additions on top)
+    items.sort(key=lambda it: (it["rank"], it["name"]))
     return items
 
 
@@ -198,56 +218,76 @@ def build_portrait(src):
 
 
 def title_from_name(name):
-    words = name.replace("-", " ").replace("_", " ").split()
-    keep_upper = {"cnc", "pcb", "vr", "hamk", "emba", "freecad"}
-    pretty = {"freecad": "FreeCAD", "s-tron": "S-tron"}
-    out = []
-    for w in words:
-        lw = w.lower()
-        out.append(pretty.get(lw) or (lw.upper() if lw in keep_upper else lw))
-    text = " ".join(out)
+    text = name.replace("-", " ").replace("_", " ")
     return text[:1].upper() + text[1:]
 
 
 # ---------------------------------------------------------------- pages
 
-def gallery_html(items, ui):
+def esc(s):
+    return html.escape(s, quote=True)
+
+
+def work_strip(items, lang, ui):
     cards = []
     for i, it in enumerate(items):
-        label = html.escape(title_from_name(it["name"]))
-        badge = '<span class="play" aria-hidden="true"></span>' if it["video"] else ""
+        title = it["meta"].get(lang) or title_from_name(it["name"])
+        year = it["meta"].get("year", "")
+        play = '<span class="play" aria-hidden="true"></span>' if it["video"] else ""
         cards.append(
-            f'<button class="tile" data-index="{i}" style="--r:{it["ratio"]:.3f}" aria-label="{label}">'
-            f'<img src="{it["thumb"]}" alt="{label}" loading="lazy" width="720" height="{int(720 / it["ratio"])}">{badge}</button>'
+            f'<li><button class="card" type="button" data-index="{i}" aria-label="{esc(title)}">'
+            f'<img src="{it["thumb"]}" alt="" loading="lazy">{play}'
+            f'<span class="cap"><b>{esc(title)}</b><small>{year}</small></span></button></li>'
         )
-    data = json.dumps([{k: it[k] for k in ("video", "src", "poster")} | {"label": title_from_name(it["name"])} for it in items])
     return f"""
-<section id="gallery" class="gallery">
-  <h2>{ui['gallery']}</h2>
-  <p class="muted">{ui['gallery_intro']}</p>
-  <div class="grid">{''.join(cards)}</div>
-</section>
-<dialog id="viewer" aria-label="{ui['gallery']}">
-  <button class="close" type="button" aria-label="{ui['close']}">×</button>
-  <button class="nav prev" type="button" aria-label="Previous">‹</button>
-  <div class="stage"></div>
-  <button class="nav next" type="button" aria-label="Next">›</button>
+<section id="work" class="work" aria-labelledby="work-title">
+  <div class="work-head">
+    <div>
+      <h2 id="work-title">{ui['work']}</h2>
+      <p class="muted hint-desktop">{ui['work_hint_desktop']}</p>
+      <p class="muted hint-mobile">{ui['work_hint_mobile']}</p>
+    </div>
+    <div class="strip-arrows">
+      <button type="button" class="strip-prev" aria-label="{ui['prev']}">‹</button>
+      <button type="button" class="strip-next" aria-label="{ui['next']}">›</button>
+    </div>
+  </div>
+  <ul class="strip">{''.join(cards)}</ul>
+</section>"""
+
+
+def viewer(items, lang, ui):
+    data = [{
+        "video": it["video"], "src": it["src"], "poster": it["poster"], "thumb": it["thumb"],
+        "title": it["meta"].get(lang) or title_from_name(it["name"]), "year": it["meta"].get("year", ""),
+    } for it in items]
+    return f"""
+<dialog id="viewer" aria-label="{ui['work']}">
+  <div class="v-top"><span class="v-count"></span><button class="v-close" type="button" aria-label="{ui['close']}">×</button></div>
+  <button class="v-nav v-prev" type="button" aria-label="{ui['prev']}"><img alt=""><span class="v-key">←</span></button>
+  <div class="v-stage"></div>
+  <button class="v-nav v-next" type="button" aria-label="{ui['next']}"><img alt=""><span class="v-key">→</span></button>
+  <div class="v-bottom"><div class="v-title"></div><div class="v-hint"><span class="keys">{ui['keys']}</span><span class="swipe">{ui['swipe']}</span></div></div>
 </dialog>
-<script>window.GALLERY = {data};</script>"""
+<script>window.GALLERY = {json.dumps(data, ensure_ascii=False)};</script>"""
 
 
-def page_html(lang, body, gallery, updated):
+def page_html(lang, body, items, updated):
     ui = UI[lang]
     other = UI[ui["other"]]
     css = (ROOT / "tools" / "site.css").read_text(encoding="utf-8")
     js = (ROOT / "tools" / "site.js").read_text(encoding="utf-8")
+    intro, rest, contacts, summary, sections = split_cv(body)
+    accordions = "".join(
+        f'<details><summary>{title}</summary><div class="acc">{content}</div></details>' for title, content in sections
+    )
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aapo Heiska — CV</title>
-<meta name="description" content="Aapo Heiska — CV">
+<meta name="description" content="{esc(re.sub('<[^>]+>', '', summary))}">
 <link rel="alternate" hreflang="{ui['other']}" href="{other['file']}">
 <style>{css}</style>
 </head>
@@ -255,18 +295,32 @@ def page_html(lang, body, gallery, updated):
 <header class="topbar">
   <a class="brand" href="#top">Aapo Heiska</a>
   <nav>
-    <a href="#gallery">{ui['gallery']}</a>
+    <a class="nav-work" href="#work">{ui['work_nav']}</a>
     <a class="button" href="pdf/cv-{lang}.pdf">{ui['pdf']}</a>
     <a class="lang" href="{other['file']}" hreflang="{ui['other']}">{ui['other_label']}</a>
   </nav>
 </header>
 <main id="top">
-<article class="cv">
-{body}
-</article>
-{gallery}
-<footer class="muted">{ui['updated']} {updated}</footer>
+  <article class="cv only-desktop">
+{intro}
+  </article>
+  <aside class="profile only-mobile">
+    <img class="avatar" src="media/portrait.jpg" alt="Aapo Heiska">
+    <div><h1>Aapo Heiska</h1><div class="role">{ui['role']}</div></div>
+    <p>{summary}</p>
+    {contacts}
+  </aside>
+{work_strip(items, lang, ui)}
+  <article class="cv only-desktop">
+{rest}
+  </article>
+  <section class="fullcv only-mobile">
+    <h2>{ui['full_cv']}</h2>
+    {accordions}
+  </section>
+  <footer class="muted">{ui['updated']} {updated}</footer>
 </main>
+{viewer(items, lang, ui)}
 <script>{js}</script>
 </body>
 </html>
@@ -286,7 +340,6 @@ def make_pdf(html_file, pdf_file):
 
 
 def main():
-    from datetime import date
     updated = date.today().strftime("%d.%m.%Y")
     items = build_media()
     (ROOT / "pdf").mkdir(exist_ok=True)
@@ -294,16 +347,14 @@ def main():
     tmp.mkdir(exist_ok=True)
 
     for lang in ("en", "fi"):
-        src = Path(CONFIG["cv_files"][lang])
-        md = src.read_text(encoding="utf-8")
+        md = Path(CONFIG["cv_files"][lang]).read_text(encoding="utf-8")
         portrait = build_portrait(photo_path(md))
         body = markdown_to_html(md, portrait)
         ui = UI[lang]
-        (ROOT / ui["file"]).write_text(page_html(lang, body, gallery_html(items, ui), updated), encoding="utf-8")
+        (ROOT / ui["file"]).write_text(page_html(lang, body, items, updated), encoding="utf-8")
 
-        print_body = markdown_to_html(md, (ROOT / portrait).as_uri())
         h = tmp / f"cv-{lang}.html"
-        h.write_text(pdf_html(lang, print_body), encoding="utf-8")
+        h.write_text(pdf_html(lang, markdown_to_html(md, (ROOT / portrait).as_uri())), encoding="utf-8")
         make_pdf(h, ROOT / "pdf" / f"cv-{lang}.pdf")
         print(f"  built {ui['file']} and pdf/cv-{lang}.pdf")
 

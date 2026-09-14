@@ -2,3 +2,4 @@ tools/.tmp/
 tools/.portrait-cache
 tools/sync.log
 __pycache__/
+_mockups/
