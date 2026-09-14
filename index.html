@@ -102,6 +102,16 @@ dialog#viewer::backdrop { background: rgba(8,10,12,.95); }
 .v-stage { position: absolute; top: 56px; bottom: 84px; left: 150px; right: 150px; display: flex; align-items: center; justify-content: center; }
 .v-stage img, .v-stage video { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; animation: fade .2s ease; }
 @keyframes fade { from { opacity: 0; } }
+.composite { display: flex; flex-direction: column; background: #111; gap: 0.5%; padding: 0.5%; border-radius: 4px; animation: fade .2s ease; }
+.c-header { width: 100%; height: auto; display: block; flex: none; }
+.c-body { flex: 1; min-height: 0; display: flex; gap: 0.6%; }
+.c-col { display: flex; flex-direction: column; gap: 0.6%; min-width: 0; }
+.c-cell { position: relative; min-height: 0; display: flex; flex-direction: column; background: #000; overflow: hidden; }
+.c-cap { flex: none; padding: .35em .6em; font-size: .9em; line-height: 1.3; color: #fff; background: #111; text-align: center; }
+.c-media { flex: 1; min-height: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.v-stage .composite img, .v-stage .composite video { max-width: none; max-height: none; border-radius: 0; animation: none; }
+.c-yt { position: relative; }
+.c-yt iframe, .c-yt > div { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .v-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 112px; padding: 6px; border: 1px solid rgba(255,255,255,.18);
   border-radius: 12px; background: rgba(255,255,255,.06); color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;
   transition: background .15s, border-color .15s, transform .15s; }
@@ -182,7 +192,7 @@ dialog#viewer::backdrop { background: rgba(8,10,12,.95); }
       <button type="button" class="strip-next" aria-label="Next">›</button>
     </div>
   </div>
-  <ul class="strip"><li><button class="card" type="button" data-index="0" aria-label="Forest robot prototype"><img src="media/forest-robot-prototype-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Forest robot prototype</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="1" aria-label="Lecture for Aalto EMBA"><img src="media/aalto-emba-lecture-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Lecture for Aalto EMBA</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="2" aria-label="VR-teleoperated robot arm, HAMK"><img src="media/robot-arm-vr-and-hamk-demo-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>VR-teleoperated robot arm, HAMK</b><small>2025</small></span></button></li><li><button class="card" type="button" data-index="3" aria-label="Kitesurfing on the frozen Baltic Sea"><img src="media/kitesurfing-frozen-baltic-sea-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Kitesurfing on the frozen Baltic Sea</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="4" aria-label="Networking in Estonia"><img src="media/estonia-networking-and-unicorn-night-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Networking in Estonia</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="5" aria-label="Startup events in Rwanda"><img src="media/rwanda-entrepreneurship-collage-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Startup events in Rwanda</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="6" aria-label="Startup tour in Shanghai"><img src="media/china-startup-tour-and-s-tron-2024-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Startup tour in Shanghai</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="7" aria-label="Floorball career"><img src="media/floorball-career-collage-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Floorball career</b><small>2008–2026</small></span></button></li><li><button class="card" type="button" data-index="8" aria-label="Takeoff Tokyo, Japan"><img src="media/takeoff-tokyo-japan-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Takeoff Tokyo, Japan</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="9" aria-label="Hydrofoil mast repair"><img src="media/hydrofoil-mast-repair-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Hydrofoil mast repair</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="10" aria-label="Treadmill repair"><img src="media/treadmill-fix-side-by-side-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Treadmill repair</b><small>2025</small></span></button></li><li><button class="card" type="button" data-index="11" aria-label="PCB design and milling"><img src="media/pcb-fabrication-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>PCB design and milling</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="12" aria-label="4-axis CNC milling"><img src="media/cnc-mill-practice-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>4-axis CNC milling</b><small>2023</small></span></button></li><li><button class="card" type="button" data-index="13" aria-label="Birdhouse: FreeCAD + CNC"><img src="media/birdhouse-freecad-cnc-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Birdhouse: FreeCAD + CNC</b><small>2023</small></span></button></li><li><button class="card" type="button" data-index="14" aria-label="Startup documentary series"><img src="media/startup-videoseries-filming-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Startup documentary series</b><small>2021</small></span></button></li><li><button class="card" type="button" data-index="15" aria-label="In the newspaper"><img src="media/newspaper-article-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>In the newspaper</b><small>2020</small></span></button></li></ul>
+  <ul class="strip"><li><button class="card" type="button" data-index="0" aria-label="Forest robot prototype"><img src="media/part-forest-robot-card-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Forest robot prototype</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="1" aria-label="Lecture for Aalto EMBA"><img src="media/aalto-emba-lecture-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Lecture for Aalto EMBA</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="2" aria-label="VR-teleoperated robot arm, HAMK"><img src="media/robot-arm-vr-and-hamk-demo-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>VR-teleoperated robot arm, HAMK</b><small>2025</small></span></button></li><li><button class="card" type="button" data-index="3" aria-label="Kitesurfing on the frozen Baltic Sea"><img src="media/kitesurfing-frozen-baltic-sea-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Kitesurfing on the frozen Baltic Sea</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="4" aria-label="Networking in Estonia"><img src="media/estonia-networking-and-unicorn-night-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Networking in Estonia</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="5" aria-label="Startup events in Rwanda"><img src="media/rwanda-entrepreneurship-collage-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Startup events in Rwanda</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="6" aria-label="Startup tour in Shanghai"><img src="media/china-startup-tour-and-s-tron-2024-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Startup tour in Shanghai</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="7" aria-label="Floorball career"><img src="media/floorball-career-collage-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Floorball career</b><small>2008–2026</small></span></button></li><li><button class="card" type="button" data-index="8" aria-label="Takeoff Tokyo, Japan"><img src="media/takeoff-tokyo-japan-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Takeoff Tokyo, Japan</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="9" aria-label="Hydrofoil mast repair"><img src="media/hydrofoil-mast-repair-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Hydrofoil mast repair</b><small>2026</small></span></button></li><li><button class="card" type="button" data-index="10" aria-label="Treadmill repair"><img src="media/treadmill-fix-side-by-side-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>Treadmill repair</b><small>2025</small></span></button></li><li><button class="card" type="button" data-index="11" aria-label="PCB design and milling"><img src="media/pcb-fabrication-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>PCB design and milling</b><small>2024</small></span></button></li><li><button class="card" type="button" data-index="12" aria-label="4-axis CNC milling"><img src="media/cnc-mill-practice-thumb.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span><span class="cap"><b>4-axis CNC milling</b><small>2023</small></span></button></li><li><button class="card" type="button" data-index="13" aria-label="Birdhouse: FreeCAD + CNC"><img src="media/birdhouse-freecad-cnc-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Birdhouse: FreeCAD + CNC</b><small>2023</small></span></button></li><li><button class="card" type="button" data-index="14" aria-label="Startup documentary series"><img src="media/startup-videoseries-filming-collage-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>Startup documentary series</b><small>2021</small></span></button></li><li><button class="card" type="button" data-index="15" aria-label="In the newspaper"><img src="media/newspaper-article-thumb.jpg" alt="" loading="lazy"><span class="cap"><b>In the newspaper</b><small>2020</small></span></button></li></ul>
 </section>
   <article class="cv only-desktop">
 
@@ -299,7 +309,7 @@ dialog#viewer::backdrop { background: rgba(8,10,12,.95); }
   <button class="v-nav v-next" type="button" aria-label="Next"><img alt=""><span class="v-key">→</span></button>
   <div class="v-bottom"><div class="v-title"></div><div class="v-hint"><span class="keys">Use ← → keys to browse · Esc to close</span><span class="swipe">Swipe to browse</span></div></div>
 </dialog>
-<script>window.GALLERY = [{"video": false, "src": "media/forest-robot-prototype-collage.jpg", "poster": null, "thumb": "media/forest-robot-prototype-collage-thumb.jpg", "title": "Forest robot prototype", "year": "2026"}, {"video": false, "src": "media/aalto-emba-lecture.jpg", "poster": null, "thumb": "media/aalto-emba-lecture-thumb.jpg", "title": "Lecture for Aalto EMBA", "year": "2026"}, {"video": true, "src": "media/robot-arm-vr-and-hamk-demo.mp4", "poster": "media/robot-arm-vr-and-hamk-demo-poster.jpg", "thumb": "media/robot-arm-vr-and-hamk-demo-thumb.jpg", "title": "VR-teleoperated robot arm, HAMK", "year": "2025"}, {"video": true, "src": "media/kitesurfing-frozen-baltic-sea.mp4", "poster": "media/kitesurfing-frozen-baltic-sea-poster.jpg", "thumb": "media/kitesurfing-frozen-baltic-sea-thumb.jpg", "title": "Kitesurfing on the frozen Baltic Sea", "year": "2026"}, {"video": true, "src": "media/estonia-networking-and-unicorn-night.mp4", "poster": "media/estonia-networking-and-unicorn-night-poster.jpg", "thumb": "media/estonia-networking-and-unicorn-night-thumb.jpg", "title": "Networking in Estonia", "year": "2024"}, {"video": true, "src": "media/rwanda-entrepreneurship-collage.mp4", "poster": "media/rwanda-entrepreneurship-collage-poster.jpg", "thumb": "media/rwanda-entrepreneurship-collage-thumb.jpg", "title": "Startup events in Rwanda", "year": "2024"}, {"video": true, "src": "media/china-startup-tour-and-s-tron-2024.mp4", "poster": "media/china-startup-tour-and-s-tron-2024-poster.jpg", "thumb": "media/china-startup-tour-and-s-tron-2024-thumb.jpg", "title": "Startup tour in Shanghai", "year": "2024"}, {"video": true, "src": "media/floorball-career-collage.mp4", "poster": "media/floorball-career-collage-poster.jpg", "thumb": "media/floorball-career-collage-thumb.jpg", "title": "Floorball career", "year": "2008–2026"}, {"video": false, "src": "media/takeoff-tokyo-japan-collage.jpg", "poster": null, "thumb": "media/takeoff-tokyo-japan-collage-thumb.jpg", "title": "Takeoff Tokyo, Japan", "year": "2024"}, {"video": false, "src": "media/hydrofoil-mast-repair.jpg", "poster": null, "thumb": "media/hydrofoil-mast-repair-thumb.jpg", "title": "Hydrofoil mast repair", "year": "2026"}, {"video": true, "src": "media/treadmill-fix-side-by-side.mp4", "poster": "media/treadmill-fix-side-by-side-poster.jpg", "thumb": "media/treadmill-fix-side-by-side-thumb.jpg", "title": "Treadmill repair", "year": "2025"}, {"video": false, "src": "media/pcb-fabrication-collage.jpg", "poster": null, "thumb": "media/pcb-fabrication-collage-thumb.jpg", "title": "PCB design and milling", "year": "2024"}, {"video": true, "src": "media/cnc-mill-practice.mp4", "poster": "media/cnc-mill-practice-poster.jpg", "thumb": "media/cnc-mill-practice-thumb.jpg", "title": "4-axis CNC milling", "year": "2023"}, {"video": false, "src": "media/birdhouse-freecad-cnc-collage.jpg", "poster": null, "thumb": "media/birdhouse-freecad-cnc-collage-thumb.jpg", "title": "Birdhouse: FreeCAD + CNC", "year": "2023"}, {"video": false, "src": "media/startup-videoseries-filming-collage.jpg", "poster": null, "thumb": "media/startup-videoseries-filming-collage-thumb.jpg", "title": "Startup documentary series", "year": "2021"}, {"video": false, "src": "media/newspaper-article.jpg", "poster": null, "thumb": "media/newspaper-article-thumb.jpg", "title": "In the newspaper", "year": "2020"}];</script>
+<script>window.GALLERY = [{"video": true, "src": "media/forest-robot-prototype-collage.jpg", "poster": null, "thumb": "media/part-forest-robot-card-thumb.jpg", "title": "Forest robot prototype", "year": "2026", "composite": {"columns": [{"flex": 1, "panels": [{"type": "youtube", "id": "fGdsQT9zmwc", "start": 50, "end": 70, "flex": 0.65, "caption": "Video: Suomen metsäkeskus – “Taimikon koneellinen kitkentä” (YouTube)"}, {"type": "image", "flex": 1.334, "src": "media/part-forest-robot-real-prototype.jpg", "poster": null, "caption": ""}]}, {"flex": 1.488, "panels": [{"type": "image", "flex": 1, "src": "media/part-forest-robot-ai-concept-1.jpg", "poster": null, "caption": ""}, {"type": "image", "flex": 1, "src": "media/part-forest-robot-ai-concept-2.jpg", "poster": null, "caption": ""}]}], "header": "media/part-forest-robot-title.jpg", "header_ratio": 0.1503, "aspect": 1.055}}, {"video": false, "src": "media/aalto-emba-lecture.jpg", "poster": null, "thumb": "media/aalto-emba-lecture-thumb.jpg", "title": "Lecture for Aalto EMBA", "year": "2026", "composite": null}, {"video": true, "src": "media/robot-arm-vr-and-hamk-demo.mp4", "poster": "media/robot-arm-vr-and-hamk-demo-poster.jpg", "thumb": "media/robot-arm-vr-and-hamk-demo-thumb.jpg", "title": "VR-teleoperated robot arm, HAMK", "year": "2025", "composite": {"columns": [{"flex": 1, "panels": [{"type": "video", "flex": 2.157, "src": "media/part-robot-arm-vr-presentation.mp4", "poster": "media/part-robot-arm-vr-presentation-poster.jpg", "caption": ""}, {"type": "youtube", "id": "h_51Ax6QHcA", "start": 0, "end": 20, "flex": 0.65, "caption": "Video: Juha Piilola – “Muikunperkuu koneella” (YouTube)"}]}, {"flex": 1.735, "panels": [{"type": "image", "flex": 1, "src": "media/part-robot-arm-factory-demo.jpg", "poster": null, "caption": ""}]}], "header": null, "header_ratio": null, "aspect": 0.973}}, {"video": true, "src": "media/kitesurfing-frozen-baltic-sea.mp4", "poster": "media/kitesurfing-frozen-baltic-sea-poster.jpg", "thumb": "media/kitesurfing-frozen-baltic-sea-thumb.jpg", "title": "Kitesurfing on the frozen Baltic Sea", "year": "2026", "composite": null}, {"video": true, "src": "media/estonia-networking-and-unicorn-night.mp4", "poster": "media/estonia-networking-and-unicorn-night-poster.jpg", "thumb": "media/estonia-networking-and-unicorn-night-thumb.jpg", "title": "Networking in Estonia", "year": "2024", "composite": null}, {"video": true, "src": "media/rwanda-entrepreneurship-collage.mp4", "poster": "media/rwanda-entrepreneurship-collage-poster.jpg", "thumb": "media/rwanda-entrepreneurship-collage-thumb.jpg", "title": "Startup events in Rwanda", "year": "2024", "composite": null}, {"video": true, "src": "media/china-startup-tour-and-s-tron-2024.mp4", "poster": "media/china-startup-tour-and-s-tron-2024-poster.jpg", "thumb": "media/china-startup-tour-and-s-tron-2024-thumb.jpg", "title": "Startup tour in Shanghai", "year": "2024", "composite": null}, {"video": true, "src": "media/floorball-career-collage.mp4", "poster": "media/floorball-career-collage-poster.jpg", "thumb": "media/floorball-career-collage-thumb.jpg", "title": "Floorball career", "year": "2008–2026", "composite": null}, {"video": false, "src": "media/takeoff-tokyo-japan-collage.jpg", "poster": null, "thumb": "media/takeoff-tokyo-japan-collage-thumb.jpg", "title": "Takeoff Tokyo, Japan", "year": "2024", "composite": null}, {"video": false, "src": "media/hydrofoil-mast-repair.jpg", "poster": null, "thumb": "media/hydrofoil-mast-repair-thumb.jpg", "title": "Hydrofoil mast repair", "year": "2026", "composite": null}, {"video": true, "src": "media/treadmill-fix-side-by-side.mp4", "poster": "media/treadmill-fix-side-by-side-poster.jpg", "thumb": "media/treadmill-fix-side-by-side-thumb.jpg", "title": "Treadmill repair", "year": "2025", "composite": null}, {"video": false, "src": "media/pcb-fabrication-collage.jpg", "poster": null, "thumb": "media/pcb-fabrication-collage-thumb.jpg", "title": "PCB design and milling", "year": "2024", "composite": null}, {"video": true, "src": "media/cnc-mill-practice.mp4", "poster": "media/cnc-mill-practice-poster.jpg", "thumb": "media/cnc-mill-practice-thumb.jpg", "title": "4-axis CNC milling", "year": "2023", "composite": null}, {"video": false, "src": "media/birdhouse-freecad-cnc-collage.jpg", "poster": null, "thumb": "media/birdhouse-freecad-cnc-collage-thumb.jpg", "title": "Birdhouse: FreeCAD + CNC", "year": "2023", "composite": null}, {"video": false, "src": "media/startup-videoseries-filming-collage.jpg", "poster": null, "thumb": "media/startup-videoseries-filming-collage-thumb.jpg", "title": "Startup documentary series", "year": "2021", "composite": null}, {"video": false, "src": "media/newspaper-article.jpg", "poster": null, "thumb": "media/newspaper-article-thumb.jpg", "title": "In the newspaper", "year": "2020", "composite": null}];</script>
 <script>(() => {
   const items = window.GALLERY || [];
 
@@ -332,11 +342,106 @@ dialog#viewer::backdrop { background: rgba(8,10,12,.95); }
 
   const wrap = (i) => (i + items.length) % items.length;
 
+  // ---- YouTube embeds (loaded only when a collage with one is opened)
+  let ytReady = null;
+  function loadYouTube() {
+    if (!ytReady) {
+      ytReady = new Promise((resolve) => {
+        window.onYouTubeIframeAPIReady = resolve;
+        const s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.append(s);
+      });
+    }
+    return ytReady;
+  }
+
+  function youtubePanel(p) {
+    const box = document.createElement("div");
+    box.className = "c-yt";
+    const mount = document.createElement("div");
+    box.append(mount);
+    loadYouTube().then(() => {
+      if (!box.isConnected) return;
+      new YT.Player(mount, {
+        host: "https://www.youtube-nocookie.com",
+        videoId: p.id,
+        playerVars: { start: p.start, end: p.end, autoplay: 1, mute: 1, controls: 1, rel: 0, playsinline: 1 },
+        events: {
+          onReady: (e) => { e.target.mute(); e.target.playVideo(); },
+          // loop only the chosen segment
+          onStateChange: (e) => { if (e.data === YT.PlayerState.ENDED) { e.target.seekTo(p.start, true); e.target.playVideo(); } },
+        },
+      });
+    });
+    return box;
+  }
+
+  function compositeEl(comp) {
+    const wrapEl = document.createElement("div");
+    wrapEl.className = "composite";
+    wrapEl.dataset.aspect = comp.aspect;
+    if (comp.header) {
+      const h = document.createElement("img");
+      h.className = "c-header";
+      h.src = comp.header;
+      h.alt = "";
+      wrapEl.append(h);
+    }
+    const body = document.createElement("div");
+    body.className = "c-body";
+    for (const col of comp.columns) {
+      const c = document.createElement("div");
+      c.className = "c-col";
+      c.style.flex = col.flex;
+      for (const p of col.panels) {
+        const cell = document.createElement("div");
+        cell.className = "c-cell";
+        cell.style.flex = p.flex;
+        if (p.caption) {
+          const cap = document.createElement("div");
+          cap.className = "c-cap";
+          cap.textContent = p.caption;
+          cell.append(cap);
+        }
+        let media;
+        if (p.type === "youtube") media = youtubePanel(p);
+        else if (p.type === "video") {
+          media = document.createElement("video");
+          Object.assign(media, { src: p.src, poster: p.poster || "", autoplay: true, muted: false, loop: true, controls: true, playsInline: true });
+        } else {
+          media = document.createElement("img");
+          media.src = p.src;
+          media.alt = "";
+        }
+        media.classList.add("c-media");
+        cell.append(media);
+        c.append(cell);
+      }
+      body.append(c);
+    }
+    wrapEl.append(body);
+    return wrapEl;
+  }
+
+  function fitComposite() {
+    const el = stage.querySelector(".composite");
+    if (!el) return;
+    const ar = Number(el.dataset.aspect);
+    const w = Math.min(stage.clientWidth, stage.clientHeight * ar);
+    el.style.width = `${w}px`;
+    el.style.height = `${w / ar}px`;
+    el.style.fontSize = `${Math.max(9, w / 55)}px`;
+  }
+  window.addEventListener("resize", fitComposite);
+
   function show(i) {
     current = wrap(i);
     const it = items[current];
     let el;
-    if (it.video) {
+    if (it.composite) {
+      el = compositeEl(it.composite);
+    } else if (it.video) {
       el = document.createElement("video");
       el.src = it.src;
       el.poster = it.poster;
@@ -349,6 +454,7 @@ dialog#viewer::backdrop { background: rgba(8,10,12,.95); }
       el.alt = it.title;
     }
     stage.replaceChildren(el);
+    fitComposite();
     count.textContent = `${current + 1} / ${items.length}`;
     title.textContent = it.year ? `${it.title} · ${it.year}` : it.title;
     prev.querySelector("img").src = items[wrap(current - 1)].thumb;
@@ -371,6 +477,7 @@ dialog#viewer::backdrop { background: rgba(8,10,12,.95); }
     card.addEventListener("click", () => {
       show(Number(card.dataset.index));
       dialog.showModal();
+      fitComposite();
       next.focus({ preventScroll: true });
     })
   );

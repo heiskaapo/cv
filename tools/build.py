@@ -145,60 +145,85 @@ def file_key(path):
     return f"{st.st_size}-{int(st.st_mtime)}"
 
 
+def process_media(src, name, cache, wanted, cache_id):
+    """Compresses one image or video into media/. Returns (out, thumb, poster) paths relative to the site."""
+    is_video = src.suffix.lower() in VIDEO_EXT
+    out = MEDIA_OUT / (name + (".mp4" if is_video else ".jpg"))
+    poster = MEDIA_OUT / (name + "-poster.jpg")
+    thumb = MEDIA_OUT / (name + "-thumb.jpg")
+    wanted.update({out.name, thumb.name} | ({poster.name} if is_video else set()))
+    key = file_key(src)
+    if not (cache.get(cache_id) == key and out.exists() and thumb.exists()):
+        print(f"  processing {cache_id}")
+        if is_video:
+            subprocess.run([
+                CONFIG["ffmpeg"], "-y", "-loglevel", "error", "-i", str(src),
+                "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-preset", "slow",
+                "-crf", "26", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(out),
+            ], check=True)
+            subprocess.run([
+                CONFIG["ffmpeg"], "-y", "-loglevel", "error", "-ss", "1", "-i", str(out),
+                "-frames:v", "1", "-q:v", "3", str(poster),
+            ], check=True)
+            still = Image.open(poster)
+        else:
+            still = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
+            full = still.copy()
+            full.thumbnail((2000, 2000))
+            full.save(out, "JPEG", quality=85, optimize=True, progressive=True)
+        t = still.convert("RGB")
+        t.thumbnail((720, 720))
+        t.save(thumb, "JPEG", quality=80, optimize=True, progressive=True)
+        cache[cache_id] = key
+    return f"media/{out.name}", f"media/{thumb.name}", (f"media/{poster.name}" if is_video else None)
+
+
+def build_composite(comp, lang_titles, cache, wanted):
+    """A collage assembled in the browser: local images/videos and YouTube embeds in columns."""
+    def part(rel):
+        src = MEDIA_SRC / rel
+        return process_media(src, "part-" + slug(Path(rel).stem), cache, wanted, rel)
+
+    columns = []
+    for col in comp["columns"]:
+        panels = []
+        for p in col["panels"]:
+            panel = {k: v for k, v in p.items() if k != "src"}
+            if p["type"] in ("image", "video"):
+                out, _, poster = part(p["src"])
+                panel["src"], panel["poster"] = out, poster
+            panels.append(panel)
+        columns.append({"flex": col.get("flex", 1), "panels": panels})
+    header = part(comp["header"])[0] if comp.get("header") else None
+    card_thumb = part(comp["card"])[1] if comp.get("card") else None
+    return {"columns": columns, "header": header, "header_ratio": comp.get("header_ratio"),
+            "aspect": comp["aspect"]}, card_thumb
+
+
 def build_media():
     cache = json.loads(CACHE_FILE.read_text(encoding="utf-8")) if CACHE_FILE.exists() else {}
     MEDIA_OUT.mkdir(exist_ok=True)
     items, wanted = [], set()
-    sources = [p for p in MEDIA_SRC.iterdir() if p.suffix.lower() in IMAGE_EXT | VIDEO_EXT] if MEDIA_SRC.exists() else []
+    sources = [p for p in MEDIA_SRC.iterdir() if p.is_file() and p.suffix.lower() in IMAGE_EXT | VIDEO_EXT] if MEDIA_SRC.exists() else []
+    listed = {g["file"]: (i, g) for i, g in enumerate(CONFIG.get("gallery", []))}
 
     for src in sources:
-        name = slug(src.stem)
-        is_video = src.suffix.lower() in VIDEO_EXT
-        out = MEDIA_OUT / (name + (".mp4" if is_video else ".jpg"))
-        poster = MEDIA_OUT / (name + "-poster.jpg")
-        thumb = MEDIA_OUT / (name + "-thumb.jpg")
-        wanted.update({out.name, thumb.name} | ({poster.name} if is_video else set()))
-        key = file_key(src)
-        fresh = cache.get(src.name) == key and out.exists() and thumb.exists()
-
-        if not fresh:
-            print(f"  processing {src.name}")
-            if is_video:
-                subprocess.run([
-                    CONFIG["ffmpeg"], "-y", "-loglevel", "error", "-i", str(src),
-                    "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-preset", "slow",
-                    "-crf", "26", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(out),
-                ], check=True)
-                subprocess.run([
-                    CONFIG["ffmpeg"], "-y", "-loglevel", "error", "-ss", "1", "-i", str(out),
-                    "-frames:v", "1", "-q:v", "3", str(poster),
-                ], check=True)
-                still = Image.open(poster)
-            else:
-                still = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
-                full = still.copy()
-                full.thumbnail((2000, 2000))
-                full.save(out, "JPEG", quality=85, optimize=True, progressive=True)
-            t = still.convert("RGB")
-            t.thumbnail((720, 720))
-            t.save(thumb, "JPEG", quality=80, optimize=True, progressive=True)
-            cache[src.name] = key
-
-        items.append({
-            "name": src.stem, "video": is_video, "src": f"media/{out.name}",
-            "thumb": f"media/{thumb.name}", "poster": f"media/{poster.name}" if is_video else None,
-        })
+        rank, meta = listed.get(src.stem, (-1, {}))
+        out, thumb, poster = process_media(src, slug(src.stem), cache, wanted, src.name)
+        item = {
+            "name": src.stem, "video": src.suffix.lower() in VIDEO_EXT, "src": out,
+            "thumb": thumb, "poster": poster, "rank": rank, "meta": meta, "composite": None,
+        }
+        if meta.get("composite"):
+            item["composite"], card_thumb = build_composite(meta["composite"], meta, cache, wanted)
+            item["thumb"] = card_thumb or item["thumb"]
+            item["video"] = True
+        items.append(item)
 
     for old in MEDIA_OUT.iterdir():
-        if old.name not in wanted and not old.name.startswith("portrait"):
+        if old.is_file() and old.name not in wanted and not old.name.startswith("portrait"):
             old.unlink()
-    cache = {k: v for k, v in cache.items() if k in {s.name for s in sources}}
     CACHE_FILE.write_text(json.dumps(cache, indent=2), encoding="utf-8")
-
-    listed = {g["file"]: (i, g) for i, g in enumerate(CONFIG.get("gallery", []))}
-    for it in items:
-        rank, meta = listed.get(it["name"], (-1, {}))
-        it["rank"], it["meta"] = rank, meta
     # files not listed in config go first (newest additions on top)
     items.sort(key=lambda it: (it["rank"], it["name"]))
     return items
@@ -256,10 +281,20 @@ def work_strip(items, lang, ui):
 </section>"""
 
 
+def localize_composite(comp, lang):
+    if not comp:
+        return None
+    columns = [{"flex": c["flex"], "panels": [
+        {k: v for k, v in p.items() if not k.startswith("caption_")} | {"caption": p.get(f"caption_{lang}", "")}
+        for p in c["panels"]]} for c in comp["columns"]]
+    return comp | {"columns": columns}
+
+
 def viewer(items, lang, ui):
     data = [{
         "video": it["video"], "src": it["src"], "poster": it["poster"], "thumb": it["thumb"],
         "title": it["meta"].get(lang) or title_from_name(it["name"]), "year": it["meta"].get("year", ""),
+        "composite": localize_composite(it["composite"], lang),
     } for it in items]
     return f"""
 <dialog id="viewer" aria-label="{ui['work']}">

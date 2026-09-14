@@ -7,21 +7,177 @@
   "ffmpeg": "C:\\Users\\aapoh\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
   "chrome": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
   "gallery": [
-    { "file": "forest_robot_prototype_collage", "year": "2026", "en": "Forest robot prototype", "fi": "Metsärobotin prototyyppi" },
-    { "file": "aalto_emba_lecture", "year": "2026", "en": "Lecture for Aalto EMBA", "fi": "Luento Aalto EMBA:lle" },
-    { "file": "robot_arm_vr_and_hamk_demo", "year": "2025", "en": "VR-teleoperated robot arm, HAMK", "fi": "VR-etäohjattu robottikäsi, HAMK" },
-    { "file": "kitesurfing_frozen_baltic_sea", "year": "2026", "en": "Kitesurfing on the frozen Baltic Sea", "fi": "Leijasurffausta jäisellä Itämerellä" },
-    { "file": "estonia_networking_and_unicorn_night", "year": "2024", "en": "Networking in Estonia", "fi": "Verkostoitumassa Virossa" },
-    { "file": "rwanda_entrepreneurship_collage", "year": "2024", "en": "Startup events in Rwanda", "fi": "Startup-tapahtumia Ruandassa" },
-    { "file": "china_startup_tour_and_s-tron_2024", "year": "2024", "en": "Startup tour in Shanghai", "fi": "Startup-kiertue Shanghaissa" },
-    { "file": "floorball_career_collage", "year": "2008–2026", "en": "Floorball career", "fi": "Salibandyura" },
-    { "file": "takeoff_tokyo_japan_collage", "year": "2024", "en": "Takeoff Tokyo, Japan", "fi": "Takeoff Tokyo, Japani" },
-    { "file": "hydrofoil_mast_repair", "year": "2026", "en": "Hydrofoil mast repair", "fi": "Hydrofoil-maston korjaus" },
-    { "file": "treadmill_fix_side_by_side", "year": "2025", "en": "Treadmill repair", "fi": "Juoksumaton korjaus" },
-    { "file": "pcb_fabrication_collage", "year": "2024", "en": "PCB design and milling", "fi": "Piirilevyn suunnittelu ja jyrsintä" },
-    { "file": "cnc_mill_practice", "year": "2023", "en": "4-axis CNC milling", "fi": "4-akselinen CNC-jyrsintä" },
-    { "file": "birdhouse_freecad_cnc_collage", "year": "2023", "en": "Birdhouse: FreeCAD + CNC", "fi": "Linnunpönttö: FreeCAD + CNC" },
-    { "file": "startup_videoseries_filming_collage", "year": "2021", "en": "Startup documentary series", "fi": "Startup-dokumenttisarja" },
-    { "file": "newspaper_article", "year": "2020", "en": "In the newspaper", "fi": "Lehtijuttu" }
+    {
+      "file": "forest_robot_prototype_collage",
+      "year": "2026",
+      "en": "Forest robot prototype",
+      "fi": "Metsärobotin prototyyppi",
+      "composite": {
+        "aspect": 1.055,
+        "card": "parts/forest_robot_card.jpg",
+        "header": "parts/forest_robot_title.jpg",
+        "header_ratio": 0.1503,
+        "columns": [
+          {
+            "flex": 1,
+            "panels": [
+              {
+                "type": "youtube",
+                "id": "fGdsQT9zmwc",
+                "start": 50,
+                "end": 70,
+                "flex": 0.65,
+                "caption_en": "Video: Suomen metsäkeskus – “Taimikon koneellinen kitkentä” (YouTube)",
+                "caption_fi": "Video: Suomen metsäkeskus – ”Taimikon koneellinen kitkentä” (YouTube)"
+              },
+              {
+                "type": "image",
+                "src": "parts/forest_robot_real_prototype.jpg",
+                "flex": 1.334
+              }
+            ]
+          },
+          {
+            "flex": 1.488,
+            "panels": [
+              {
+                "type": "image",
+                "src": "parts/forest_robot_ai_concept_1.jpg",
+                "flex": 1
+              },
+              {
+                "type": "image",
+                "src": "parts/forest_robot_ai_concept_2.jpg",
+                "flex": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "file": "aalto_emba_lecture",
+      "year": "2026",
+      "en": "Lecture for Aalto EMBA",
+      "fi": "Luento Aalto EMBA:lle"
+    },
+    {
+      "file": "robot_arm_vr_and_hamk_demo",
+      "year": "2025",
+      "en": "VR-teleoperated robot arm, HAMK",
+      "fi": "VR-etäohjattu robottikäsi, HAMK",
+      "composite": {
+        "aspect": 0.973,
+        "columns": [
+          {
+            "flex": 1,
+            "panels": [
+              {
+                "type": "video",
+                "src": "parts/robot_arm_vr_presentation.mp4",
+                "flex": 2.157
+              },
+              {
+                "type": "youtube",
+                "id": "h_51Ax6QHcA",
+                "start": 0,
+                "end": 20,
+                "flex": 0.65,
+                "caption_en": "Video: Juha Piilola – “Muikunperkuu koneella” (YouTube)",
+                "caption_fi": "Video: Juha Piilola – ”Muikunperkuu koneella” (YouTube)"
+              }
+            ]
+          },
+          {
+            "flex": 1.735,
+            "panels": [
+              {
+                "type": "image",
+                "src": "parts/robot_arm_factory_demo.jpg",
+                "flex": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "file": "kitesurfing_frozen_baltic_sea",
+      "year": "2026",
+      "en": "Kitesurfing on the frozen Baltic Sea",
+      "fi": "Leijasurffausta jäisellä Itämerellä"
+    },
+    {
+      "file": "estonia_networking_and_unicorn_night",
+      "year": "2024",
+      "en": "Networking in Estonia",
+      "fi": "Verkostoitumassa Virossa"
+    },
+    {
+      "file": "rwanda_entrepreneurship_collage",
+      "year": "2024",
+      "en": "Startup events in Rwanda",
+      "fi": "Startup-tapahtumia Ruandassa"
+    },
+    {
+      "file": "china_startup_tour_and_s-tron_2024",
+      "year": "2024",
+      "en": "Startup tour in Shanghai",
+      "fi": "Startup-kiertue Shanghaissa"
+    },
+    {
+      "file": "floorball_career_collage",
+      "year": "2008–2026",
+      "en": "Floorball career",
+      "fi": "Salibandyura"
+    },
+    {
+      "file": "takeoff_tokyo_japan_collage",
+      "year": "2024",
+      "en": "Takeoff Tokyo, Japan",
+      "fi": "Takeoff Tokyo, Japani"
+    },
+    {
+      "file": "hydrofoil_mast_repair",
+      "year": "2026",
+      "en": "Hydrofoil mast repair",
+      "fi": "Hydrofoil-maston korjaus"
+    },
+    {
+      "file": "treadmill_fix_side_by_side",
+      "year": "2025",
+      "en": "Treadmill repair",
+      "fi": "Juoksumaton korjaus"
+    },
+    {
+      "file": "pcb_fabrication_collage",
+      "year": "2024",
+      "en": "PCB design and milling",
+      "fi": "Piirilevyn suunnittelu ja jyrsintä"
+    },
+    {
+      "file": "cnc_mill_practice",
+      "year": "2023",
+      "en": "4-axis CNC milling",
+      "fi": "4-akselinen CNC-jyrsintä"
+    },
+    {
+      "file": "birdhouse_freecad_cnc_collage",
+      "year": "2023",
+      "en": "Birdhouse: FreeCAD + CNC",
+      "fi": "Linnunpönttö: FreeCAD + CNC"
+    },
+    {
+      "file": "startup_videoseries_filming_collage",
+      "year": "2021",
+      "en": "Startup documentary series",
+      "fi": "Startup-dokumenttisarja"
+    },
+    {
+      "file": "newspaper_article",
+      "year": "2020",
+      "en": "In the newspaper",
+      "fi": "Lehtijuttu"
+    }
   ]
 }

@@ -30,11 +30,106 @@
 
   const wrap = (i) => (i + items.length) % items.length;
 
+  // ---- YouTube embeds (loaded only when a collage with one is opened)
+  let ytReady = null;
+  function loadYouTube() {
+    if (!ytReady) {
+      ytReady = new Promise((resolve) => {
+        window.onYouTubeIframeAPIReady = resolve;
+        const s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.append(s);
+      });
+    }
+    return ytReady;
+  }
+
+  function youtubePanel(p) {
+    const box = document.createElement("div");
+    box.className = "c-yt";
+    const mount = document.createElement("div");
+    box.append(mount);
+    loadYouTube().then(() => {
+      if (!box.isConnected) return;
+      new YT.Player(mount, {
+        host: "https://www.youtube-nocookie.com",
+        videoId: p.id,
+        playerVars: { start: p.start, end: p.end, autoplay: 1, mute: 1, controls: 1, rel: 0, playsinline: 1 },
+        events: {
+          onReady: (e) => { e.target.mute(); e.target.playVideo(); },
+          // loop only the chosen segment
+          onStateChange: (e) => { if (e.data === YT.PlayerState.ENDED) { e.target.seekTo(p.start, true); e.target.playVideo(); } },
+        },
+      });
+    });
+    return box;
+  }
+
+  function compositeEl(comp) {
+    const wrapEl = document.createElement("div");
+    wrapEl.className = "composite";
+    wrapEl.dataset.aspect = comp.aspect;
+    if (comp.header) {
+      const h = document.createElement("img");
+      h.className = "c-header";
+      h.src = comp.header;
+      h.alt = "";
+      wrapEl.append(h);
+    }
+    const body = document.createElement("div");
+    body.className = "c-body";
+    for (const col of comp.columns) {
+      const c = document.createElement("div");
+      c.className = "c-col";
+      c.style.flex = col.flex;
+      for (const p of col.panels) {
+        const cell = document.createElement("div");
+        cell.className = "c-cell";
+        cell.style.flex = p.flex;
+        if (p.caption) {
+          const cap = document.createElement("div");
+          cap.className = "c-cap";
+          cap.textContent = p.caption;
+          cell.append(cap);
+        }
+        let media;
+        if (p.type === "youtube") media = youtubePanel(p);
+        else if (p.type === "video") {
+          media = document.createElement("video");
+          Object.assign(media, { src: p.src, poster: p.poster || "", autoplay: true, muted: false, loop: true, controls: true, playsInline: true });
+        } else {
+          media = document.createElement("img");
+          media.src = p.src;
+          media.alt = "";
+        }
+        media.classList.add("c-media");
+        cell.append(media);
+        c.append(cell);
+      }
+      body.append(c);
+    }
+    wrapEl.append(body);
+    return wrapEl;
+  }
+
+  function fitComposite() {
+    const el = stage.querySelector(".composite");
+    if (!el) return;
+    const ar = Number(el.dataset.aspect);
+    const w = Math.min(stage.clientWidth, stage.clientHeight * ar);
+    el.style.width = `${w}px`;
+    el.style.height = `${w / ar}px`;
+    el.style.fontSize = `${Math.max(9, w / 55)}px`;
+  }
+  window.addEventListener("resize", fitComposite);
+
   function show(i) {
     current = wrap(i);
     const it = items[current];
     let el;
-    if (it.video) {
+    if (it.composite) {
+      el = compositeEl(it.composite);
+    } else if (it.video) {
       el = document.createElement("video");
       el.src = it.src;
       el.poster = it.poster;
@@ -47,6 +142,7 @@
       el.alt = it.title;
     }
     stage.replaceChildren(el);
+    fitComposite();
     count.textContent = `${current + 1} / ${items.length}`;
     title.textContent = it.year ? `${it.title} · ${it.year}` : it.title;
     prev.querySelector("img").src = items[wrap(current - 1)].thumb;
@@ -69,6 +165,7 @@
     card.addEventListener("click", () => {
       show(Number(card.dataset.index));
       dialog.showModal();
+      fitComposite();
       next.focus({ preventScroll: true });
     })
   );
