@@ -3,13 +3,6 @@
   --rule: #d0d7de; --accent: #0969da; --accent-ink: #ffffff; --quote: #57606a; --shadow: 0 1px 3px rgba(31,35,40,.08);
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1117; --paper: #161b22; --ink: #e6edf3; --muted: #9198a1; --line: #30363d;
-    --rule: #30363d; --accent: #4493f8; --accent-ink: #0d1117; --quote: #9198a1; --shadow: none;
-    color-scheme: dark;
-  }
-}
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, "Open Sans", sans-serif; }
