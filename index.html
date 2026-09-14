@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aapo Heiska — CV</title>
+<meta name="description" content="Aapo Heiska — CV">
+<link rel="alternate" hreflang="fi" href="fi.html">
+<style>:root {
+  --bg: #f6f7f9; --paper: #ffffff; --ink: #1f2328; --muted: #59636e; --line: #d8dee4;
+  --rule: #d0d7de; --accent: #0969da; --accent-ink: #ffffff; --quote: #57606a; --shadow: 0 1px 3px rgba(31,35,40,.08);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --paper: #161b22; --ink: #e6edf3; --muted: #9198a1; --line: #30363d;
+    --rule: #30363d; --accent: #4493f8; --accent-ink: #0d1117; --quote: #9198a1; --shadow: none;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, "Open Sans", sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px max(16px, calc((100% - 1040px) / 2)); background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.brand { font-weight: 600; color: var(--ink); }
+.topbar nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 15px; }
+.button { background: var(--accent); color: var(--accent-ink); padding: 6px 14px; border-radius: 6px; font-weight: 600; }
+.button:hover { text-decoration: none; filter: brightness(1.08); }
+.lang { border: 1px solid var(--line); padding: 5px 12px; border-radius: 6px; color: var(--ink); }
+
+main { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+.cv { max-width: 820px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+  padding: clamp(20px, 5vw, 48px); box-shadow: var(--shadow); }
+.cv h1, .cv h2, .cv h3, .cv h4 { font-weight: 600; line-height: 1.3; }
+.cv h1 { font-size: 2rem; margin: 0 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.cv h2 { font-size: 1.5rem; margin: 24px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.cv h3 { font-size: 1.125rem; margin: 24px 0 10px; }
+.cv h4 { font-size: 1rem; margin: 22px 0 8px; }
+.cv p { margin: 0 0 14px; }
+.cv hr { border: 0; height: 4px; background: var(--rule); margin: 28px 0; border-radius: 2px; }
+.cv ul { margin: 0 0 14px; padding-left: 1.6em; }
+.cv ul ul { list-style: circle; }
+.cv blockquote { margin: 0 0 14px; padding: 0 1em; color: var(--quote); border-left: 4px solid var(--rule); }
+.portrait { width: 100%; max-width: 100%; height: auto; display: block; border-radius: 6px; margin: 8px 0 20px; }
+
+.gallery { margin-top: 48px; }
+.gallery h2 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 600; }
+.muted { color: var(--muted); }
+.grid { margin-top: 20px; columns: 3 280px; column-gap: 14px; }
+.tile { position: relative; display: block; width: 100%; margin: 0 0 14px; padding: 0; border: 1px solid var(--line); border-radius: 8px;
+  overflow: hidden; background: var(--paper); cursor: zoom-in; break-inside: avoid; box-shadow: var(--shadow); }
+.tile img { display: block; width: 100%; height: auto; aspect-ratio: var(--r); transition: transform .25s ease; }
+.tile:hover img { transform: scale(1.02); }
+.tile:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.play { position: absolute; inset: 50% auto auto 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%;
+  background: rgba(0,0,0,.6); }
+.play::after { content: ""; position: absolute; left: 24px; top: 18px; border-style: solid; border-width: 12px 0 12px 19px;
+  border-color: transparent transparent transparent #fff; }
+
+dialog#viewer { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(0,0,0,.92); color: #fff; }
+dialog#viewer::backdrop { background: rgba(0,0,0,.92); }
+.stage { position: absolute; inset: 48px 64px; display: flex; align-items: center; justify-content: center; }
+.stage img, .stage video { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; }
+dialog button { position: absolute; background: rgba(255,255,255,.12); color: #fff; border: 0; border-radius: 50%; width: 44px; height: 44px;
+  font-size: 28px; line-height: 1; cursor: pointer; }
+dialog button:hover { background: rgba(255,255,255,.25); }
+.close { top: 8px; right: 12px; }
+.nav { top: 50%; margin-top: -22px; }
+.prev { left: 10px; } .next { right: 10px; }
+
+footer { text-align: center; margin-top: 40px; font-size: 14px; }
+
+@media (max-width: 600px) {
+  .topbar nav a:not(.button):not(.lang) { display: none; }
+  .stage { inset: 56px 8px 72px; }
+  .nav { top: auto; bottom: 14px; margin: 0; }
+  .prev { left: calc(50% - 56px); } .next { right: calc(50% - 56px); }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#top">Aapo Heiska</a>
+  <nav>
+    <a href="#gallery">Projects in photos and videos</a>
+    <a class="button" href="pdf/cv-en.pdf">Download PDF</a>
+    <a class="lang" href="fi.html" hreflang="fi">Suomeksi</a>
+  </nav>
+</header>
+<main id="top">
+<article class="cv">
+<h1 id="cv">CV</h1>
+<img class="portrait" src="media/portrait.jpg" alt="Aapo Heiska">
+<h2 id="contact-information">Contact information</h2>
+<ul><li>Name: Aapo Heiska</li><li>Email: <a href="mailto:aapo.heiska@gmail.com">aapo.heiska@gmail.com</a></li><li>Phone: +358 45 159 8937</li><li>Location: Espoo, Finland</li></ul>
+<hr>
+<h2 id="summary">Summary</h2>
+<p>A gritty electronics student at Aalto University with an entrepreneurial background. Most recently, I developed and researched remotely operated robots for the fish processing and forestry industries. I am now looking for a full-time technician-level job in robotics/electronics that lets me learn more and, in the future, take on more demanding design-level work.</p>
+<hr>
+<h2 id="my-cv-and-projects-in-photos-and-videos">My CV and projects in photos and videos</h2>
+<p><a href="https://photos.app.goo.gl/G2HmbpiHnkcKdRSC7">https://photos.app.goo.gl/G2HmbpiHnkcKdRSC7</a></p>
+<hr>
+<h2 id="education">Education</h2>
+<ul><li><b>Aalto University</b> — Digital Systems and Design, Bachelor's stage<ul><li>Started 2023</li><li>Expected graduation 2030</li></ul></li><li><b>Schildt Upper Secondary School</b>, Sports programme<ul><li>Started 2019</li><li>Graduated 2022</li></ul></li></ul>
+<hr>
+<h2 id="languages">Languages</h2>
+<ul><li>Finnish: native</li><li>English: fluent</li><li>Swedish: basic</li><li>Spanish: basic</li></ul>
+<hr>
+<h2 id="work-experience">Work experience</h2>
+<h3 id="entrepreneur-sole-proprietorship-aapo-heiska-04-2026-07-2026">Entrepreneur, Sole proprietorship Aapo Heiska, 04/2026 - 07/2026</h3>
+<p>I developed a robot for sapling stand and forest management based on the cable-driven parallel robot (CDPR) format, and built a demo device with an aluminium frame. I talked with people in the industry through cold calls and did my own research on the topic. I decided to end the project after running profitability calculations based on the demo robot I had built. My interest in working at a company in the field grew out of the resource requirements and the lack of a work community.</p>
+<p>What I learned: how expensive it is to develop robotics, the value of a work community, choosing which ideas to pursue</p>
+<h3 id="sole-proprietorship-client-aalto-university-executive-education-5-2026-5-2026">Sole proprietorship, Client: Aalto University Executive Education, 5/2026-5/2026</h3>
+<p>A commissioned lecture for Aalto Executive MBA adult students on modern production techniques, offshore manufacturing, and the makerspace movement around the world. I planned and led my lecture on Aalto University premises for about 20 business executives, which led to an invitation as a guest to the Egyptian Embassy's national day celebration.</p>
+<p>What I learned: diplomacy, lecturing to executives</p>
+<blockquote>More information and reference: Saana Kaihu, Program Director, Aalto University Executive Education Ltd</blockquote>
+<h3 id="student-assistant-h-me-university-of-applied-sciences-hamk-07-2025-09-2025">Student Assistant - Häme University of Applied Sciences (HAMK) 07/2025 - 09/2025</h3>
+<p>I started researching automation in the fishing industry on my own through countless cold calls and visits. Eventually I was invited to join HAMK's robotics research group to design and develop the use of 3D-printable, remotely operated robotic arms in industrial processing of small fish. I noticed that I liked robotics and electronics more and more.</p>
+<p>What I learned: perseverance, courage, what makes a good boss</p>
+<blockquote>More information and reference: Jari Kaikkonen, Senior Specialist, HAMK</blockquote>
+<h3 id="student-assistant-aalto-university-fablab-01-2025-05-2025">Student Assistant - Aalto University Fablab 01/2025 - 05/2025</h3>
+<p>I taught Aalto University staff and students how to use 3D printers, PCB milling machines and 4-axis CNC machines, and got excited about electronics, building devices and repairing them myself along the way.</p>
+<p>What I learned: DIY culture, making physical things</p>
+<blockquote>More information and reference: Solomon Embafrash, Workshop Master, Aalto University Fablab</blockquote>
+<h3 id="entrepreneur-startcorps-oy-02-2024-09-2024">Entrepreneur - Startcorps Oy 02/2024 - 09/2024</h3>
+<p>Organising startup events as a volunteer (Rwanda and China for 2 months, Japan for 2 weeks and Estonia for 1 week), with the goal of getting to know local young people and building a business around student exchanges to Finland. The business turned out to be unprofitable, so we decided to shut it down. I funded part of the Japan project with support from Innovestor Oy, and in return I worked to find them useful contacts in the Japanese startup world.</p>
+<p>What I learned: the importance of networks, hype culture vs. real startup culture</p>
+<blockquote>More information and reference: Petri Laine, Venture Partner, Innovestor</blockquote>
+<h3 id="programmer-finnish-defence-research-agency-03-2023-09-2023">Programmer - Finnish Defence Research Agency 03/2023 - 09/2023</h3>
+<p>During my conscript service, I worked in the Information Technology Division configuring research equipment, and presented a telecommunications simulator at the Defence Forces' 10th anniversary celebration.</p>
+<p>What I learned: impostor syndrome, and working alongside brilliant young people</p>
+<blockquote>More information and reference: Jarkko Karinen, Finnish Defence Research Agency</blockquote>
+<h3 id="entrepreneur-oiwaltava-productions-05-2021-07-2021">Entrepreneur - Oiwaltava Productions 05/2021 - 07/2021</h3>
+<p>My second company, a sole proprietorship producing documentary videos and video ads. 3 customers and about 2,500 euros in revenue. I won 1,000 euros' worth of camera equipment in a pitching competition for young people in Central Finland, and raised about 2,000 euros in funding from several foundations for my self-produced documentary series about startup entrepreneurship.</p>
+<p>What I learned: hiring people, how kind-hearted people are towards young entrepreneurs, and cold calling.</p>
+<h3 id="entrepreneur-aapon-apu-ja-papu-05-2020-07-2020">Entrepreneur - Aapon apu ja papu 05/2020 - 07/2020</h3>
+<p>My first company, a sole proprietorship doing property maintenance and renovation work. I landed around twenty customers over the summer and about 3,000 euros in revenue.</p>
+<p>What I learned: the freedom that comes with entrepreneurship.</p>
+<hr>
+<h2 id="a-closer-look-at-my-practical-skills-through-projects">A closer look at my practical skills through projects</h2>
+<h4 id="entrepreneurship">Entrepreneurship</h4>
+<p>I founded two profitable companies of my own as sole proprietorships in Jyväskylä at the ages of 16 and 17. Between the two, I landed about 20 customers in total, about 5,500 euros in revenue, about 3,000 euros in seed funding through various business competitions and applications, and employed one secondary school student part-time. I did most of the customer acquisition and marketing in Facebook groups and by emailing companies.</p>
+<h4 id="cold-calling-and-reaching-out-to-people">Cold calling and reaching out to people</h4>
+<p>I enjoy cold calling complete strangers to gather information for my own projects. For example, in 2025 a cold call got me invited to Lake Saimaa by a part-owner of a fish processing plant, and I spent a 24-hour workday with him trawling for vendace on Saimaa. My aim was to understand the bottlenecks of the Finnish fishing industry and how robotics could help in this field. This later led to an invitation to join the robotics research group at Häme University of Applied Sciences to develop automated vendace processing.</p>
+<h4 id="bringing-people-together">Bringing people together</h4>
+<p>In my first autumn at Aalto University in 2023, I ended up gathering about 300 students interested in table tennis into a Telegram group, so that I could more easily find people to play with on campus in the evenings. I did this through dozens of different chat groups and by putting up printed posters around campus over several weeks. Later, in 2024, I pulled the same stunt in China and Rwanda, and used these groups to organise, among other things, a one-day startup tour in Shanghai for 50 international exchange students as a marketing stunt for a local startup event I was helping to organise.</p>
+<h4 id="manufacturing-and-design">Manufacturing and design</h4>
+<p><b>2026</b> In the summer, interested in forestry, I decided to build a prototype of a cable-driven robot. I did the electronic and mechanical design with the help of Claude AI, sourced the electrical components through DigiKey, and ordered a modular aluminium profile frame using aluxprofile.com's made-to-measure service.</p>
+<p><b>2025</b> I have built an SO-101 3D-printable robotic arm, modelled an add-on for it in FreeCAD, 3D printed it using Prusa MK4S printers and PrusaSlicer, assembled it, and used VR technology to teleoperate the robotic arm for HAMK's project.</p>
+<p><b>2024</b> On school electronics courses, I have designed simple single-layer PCBs using KiCad, milled PCBs with a Roland SRM-20 PCB milling machine, and hand-soldered through-hole components.</p>
+<p><b>2023</b> I practised making wooden figures with a 4-axis MDX-40 CNC machine. For this, I studied toolpaths and how to program them using FreeCAD and Fusion 360.</p>
+<hr>
+<h2 id="other-history">Other history</h2>
+<h3 id="floorball-career-2008-2020-2023-2026">Floorball career, 2008-2020 + 2023-2026</h3>
+<p>A floorball career of about 16 years, during which I got to experience the whole spectrum of the sport, from family clubs to a junior national team training camp and all the way to the men's second-highest national league.</p>
+<h3 id="business-developer-laru-surf-club-01-2026-present">Business Developer, Laru Surf Club 01/2026 - present</h3>
+<p>As a hobby, I help grow the business of a Lauttasaari-based surf club focused on kitesurfing and wingfoiling, concentrating on managing equipment rentals and training our customers in safe water sports practices. I have learned about customer acquisition and customer management in a service business.</p>
+<blockquote>More information and reference: Peter Törnroos, CEO, Correktor Solutions Oy</blockquote>
+</article>
+
+<section id="gallery" class="gallery">
+  <h2>Projects in photos and videos</h2>
+  <p class="muted">Photos and videos of my projects and work. Click an item to view it larger.</p>
+  <div class="grid"><button class="tile" data-index="0" style="--r:1.057" aria-label="Forest robot prototype collage"><img src="media/forest-robot-prototype-collage-thumb.jpg" alt="Forest robot prototype collage" loading="lazy" width="720" height="681"></button><button class="tile" data-index="1" style="--r:0.750" aria-label="Aalto EMBA lecture"><img src="media/aalto-emba-lecture-thumb.jpg" alt="Aalto EMBA lecture" loading="lazy" width="720" height="960"></button><button class="tile" data-index="2" style="--r:0.750" aria-label="Kitesurfing frozen baltic sea"><img src="media/kitesurfing-frozen-baltic-sea-thumb.jpg" alt="Kitesurfing frozen baltic sea" loading="lazy" width="720" height="960"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="3" style="--r:0.562" aria-label="Hydrofoil mast repair"><img src="media/hydrofoil-mast-repair-thumb.jpg" alt="Hydrofoil mast repair" loading="lazy" width="720" height="1280"></button><button class="tile" data-index="4" style="--r:1.099" aria-label="Robot arm VR and HAMK demo"><img src="media/robot-arm-vr-and-hamk-demo-thumb.jpg" alt="Robot arm VR and HAMK demo" loading="lazy" width="720" height="655"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="5" style="--r:1.500" aria-label="Treadmill fix side by side"><img src="media/treadmill-fix-side-by-side-thumb.jpg" alt="Treadmill fix side by side" loading="lazy" width="720" height="480"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="6" style="--r:2.562" aria-label="PCB fabrication collage"><img src="media/pcb-fabrication-collage-thumb.jpg" alt="PCB fabrication collage" loading="lazy" width="720" height="281"></button><button class="tile" data-index="7" style="--r:0.908" aria-label="China startup tour and s tron 2024"><img src="media/china-startup-tour-and-s-tron-2024-thumb.jpg" alt="China startup tour and s tron 2024" loading="lazy" width="720" height="792"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="8" style="--r:0.957" aria-label="Rwanda entrepreneurship collage"><img src="media/rwanda-entrepreneurship-collage-thumb.jpg" alt="Rwanda entrepreneurship collage" loading="lazy" width="720" height="752"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="9" style="--r:0.961" aria-label="Takeoff tokyo japan collage"><img src="media/takeoff-tokyo-japan-collage-thumb.jpg" alt="Takeoff tokyo japan collage" loading="lazy" width="720" height="749"></button><button class="tile" data-index="10" style="--r:2.517" aria-label="Estonia networking and unicorn night"><img src="media/estonia-networking-and-unicorn-night-thumb.jpg" alt="Estonia networking and unicorn night" loading="lazy" width="720" height="286"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="11" style="--r:0.562" aria-label="CNC mill practice"><img src="media/cnc-mill-practice-thumb.jpg" alt="CNC mill practice" loading="lazy" width="720" height="1280"><span class="play" aria-hidden="true"></span></button><button class="tile" data-index="12" style="--r:1.103" aria-label="Birdhouse FreeCAD CNC collage"><img src="media/birdhouse-freecad-cnc-collage-thumb.jpg" alt="Birdhouse FreeCAD CNC collage" loading="lazy" width="720" height="653"></button><button class="tile" data-index="13" style="--r:2.236" aria-label="Startup videoseries filming collage"><img src="media/startup-videoseries-filming-collage-thumb.jpg" alt="Startup videoseries filming collage" loading="lazy" width="720" height="322"></button><button class="tile" data-index="14" style="--r:1.333" aria-label="Newspaper article"><img src="media/newspaper-article-thumb.jpg" alt="Newspaper article" loading="lazy" width="720" height="540"></button></div>
+</section>
+<dialog id="viewer" aria-label="Projects in photos and videos">
+  <button class="close" type="button" aria-label="Close">×</button>
+  <button class="nav prev" type="button" aria-label="Previous">‹</button>
+  <div class="stage"></div>
+  <button class="nav next" type="button" aria-label="Next">›</button>
+</dialog>
+<script>window.GALLERY = [{"video": false, "src": "media/forest-robot-prototype-collage.jpg", "poster": null, "label": "Forest robot prototype collage"}, {"video": false, "src": "media/aalto-emba-lecture.jpg", "poster": null, "label": "Aalto EMBA lecture"}, {"video": true, "src": "media/kitesurfing-frozen-baltic-sea.mp4", "poster": "media/kitesurfing-frozen-baltic-sea-poster.jpg", "label": "Kitesurfing frozen baltic sea"}, {"video": false, "src": "media/hydrofoil-mast-repair.jpg", "poster": null, "label": "Hydrofoil mast repair"}, {"video": true, "src": "media/robot-arm-vr-and-hamk-demo.mp4", "poster": "media/robot-arm-vr-and-hamk-demo-poster.jpg", "label": "Robot arm VR and HAMK demo"}, {"video": true, "src": "media/treadmill-fix-side-by-side.mp4", "poster": "media/treadmill-fix-side-by-side-poster.jpg", "label": "Treadmill fix side by side"}, {"video": false, "src": "media/pcb-fabrication-collage.jpg", "poster": null, "label": "PCB fabrication collage"}, {"video": true, "src": "media/china-startup-tour-and-s-tron-2024.mp4", "poster": "media/china-startup-tour-and-s-tron-2024-poster.jpg", "label": "China startup tour and s tron 2024"}, {"video": true, "src": "media/rwanda-entrepreneurship-collage.mp4", "poster": "media/rwanda-entrepreneurship-collage-poster.jpg", "label": "Rwanda entrepreneurship collage"}, {"video": false, "src": "media/takeoff-tokyo-japan-collage.jpg", "poster": null, "label": "Takeoff tokyo japan collage"}, {"video": true, "src": "media/estonia-networking-and-unicorn-night.mp4", "poster": "media/estonia-networking-and-unicorn-night-poster.jpg", "label": "Estonia networking and unicorn night"}, {"video": true, "src": "media/cnc-mill-practice.mp4", "poster": "media/cnc-mill-practice-poster.jpg", "label": "CNC mill practice"}, {"video": false, "src": "media/birdhouse-freecad-cnc-collage.jpg", "poster": null, "label": "Birdhouse FreeCAD CNC collage"}, {"video": false, "src": "media/startup-videoseries-filming-collage.jpg", "poster": null, "label": "Startup videoseries filming collage"}, {"video": false, "src": "media/newspaper-article.jpg", "poster": null, "label": "Newspaper article"}];</script>
+<footer class="muted">Updated 14.09.2026</footer>
+</main>
+<script>(() => {
+  const items = window.GALLERY || [];
+  const dialog = document.getElementById("viewer");
+  if (!dialog || !items.length) return;
+  const stage = dialog.querySelector(".stage");
+  let current = 0;
+
+  function show(i) {
+    current = (i + items.length) % items.length;
+    const it = items[current];
+    stage.replaceChildren();
+    let el;
+    if (it.video) {
+      el = document.createElement("video");
+      el.src = it.src;
+      el.poster = it.poster;
+      el.controls = true;
+      el.autoplay = true;
+      el.playsInline = true;
+    } else {
+      el = document.createElement("img");
+      el.src = it.src;
+    }
+    el.setAttribute("aria-label", it.label);
+    el.alt = it.label;
+    stage.append(el);
+  }
+
+  document.querySelectorAll(".tile").forEach((tile) =>
+    tile.addEventListener("click", () => {
+      show(Number(tile.dataset.index));
+      dialog.showModal();
+    })
+  );
+  dialog.querySelector(".close").addEventListener("click", () => dialog.close());
+  dialog.querySelector(".prev").addEventListener("click", () => show(current - 1));
+  dialog.querySelector(".next").addEventListener("click", () => show(current + 1));
+  dialog.addEventListener("close", () => stage.replaceChildren());
+  dialog.addEventListener("click", (e) => { if (e.target === dialog || e.target === stage) dialog.close(); });
+  dialog.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+  });
+
+  let startX = null;
+  stage.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener("touchend", (e) => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
+})();
+</script>
+</body>
+</html>

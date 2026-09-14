@@ -1,0 +1,26 @@
+{
+  "cv_files": {
+    "fi": "C:\\Users\\aapoh\\Documents\\Codex\\2026-09-12\\v\\profiili\\cv.md",
+    "en": "C:\\Users\\aapoh\\Documents\\Codex\\2026-09-12\\v\\profiili\\cv-en.md"
+  },
+  "media_folder": "C:\\Users\\aapoh\\Desktop\\Captionated",
+  "ffmpeg": "C:\\Users\\aapoh\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+  "chrome": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  "gallery_order": [
+    "forest_robot_prototype_collage",
+    "aalto_emba_lecture",
+    "kitesurfing_frozen_baltic_sea",
+    "hydrofoil_mast_repair",
+    "robot_arm_vr_and_hamk_demo",
+    "treadmill_fix_side_by_side",
+    "pcb_fabrication_collage",
+    "china_startup_tour_and_s-tron_2024",
+    "rwanda_entrepreneurship_collage",
+    "takeoff_tokyo_japan_collage",
+    "estonia_networking_and_unicorn_night",
+    "cnc_mill_practice",
+    "birdhouse_freecad_cnc_collage",
+    "startup_videoseries_filming_collage",
+    "newspaper_article"
+  ]
+}
