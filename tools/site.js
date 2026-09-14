@@ -56,7 +56,7 @@
         videoId: p.id,
         playerVars: { start: p.start, end: p.end, autoplay: 1, mute: 1, controls: 1, rel: 0, playsinline: 1 },
         events: {
-          onReady: (e) => { e.target.mute(); e.target.playVideo(); },
+          onReady: (e) => { coverYouTube(box); e.target.mute(); e.target.playVideo(); },
           // loop only the chosen segment
           onStateChange: (e) => { if (e.data === YT.PlayerState.ENDED) { e.target.seekTo(p.start, true); e.target.playVideo(); } },
         },
@@ -120,6 +120,16 @@
     el.style.width = `${w}px`;
     el.style.height = `${w / ar}px`;
     el.style.fontSize = `${Math.max(9, w / 55)}px`;
+    el.querySelectorAll(".c-yt").forEach(coverYouTube);
+  }
+
+  // scale the 16:9 player so it fills its whole cell (edges are cropped instead of letterboxed)
+  function coverYouTube(box) {
+    const player = box.firstElementChild;
+    if (!player) return;
+    const w = Math.max(box.clientWidth, box.clientHeight * 16 / 9);
+    player.style.width = `${w}px`;
+    player.style.height = `${w * 9 / 16}px`;
   }
   window.addEventListener("resize", fitComposite);
 

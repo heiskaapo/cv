@@ -13,7 +13,7 @@
       "en": "Forest robot prototype",
       "fi": "Metsärobotin prototyyppi",
       "composite": {
-        "aspect": 1.055,
+        "aspect": 1.017,
         "card": "parts/forest_robot_card.jpg",
         "header": "parts/forest_robot_title.jpg",
         "header_ratio": 0.1503,
@@ -26,19 +26,19 @@
                 "id": "fGdsQT9zmwc",
                 "start": 50,
                 "end": 70,
-                "flex": 0.65,
+                "flex": 1,
                 "caption_en": "Video: Suomen metsäkeskus – “Taimikon koneellinen kitkentä” (YouTube)",
                 "caption_fi": "Video: Suomen metsäkeskus – ”Taimikon koneellinen kitkentä” (YouTube)"
               },
               {
                 "type": "image",
                 "src": "parts/forest_robot_real_prototype.jpg",
-                "flex": 1.334
+                "flex": 1
               }
             ]
           },
           {
-            "flex": 1.488,
+            "flex": 1,
             "panels": [
               {
                 "type": "image",
@@ -67,7 +67,7 @@
       "en": "VR-teleoperated robot arm, HAMK",
       "fi": "VR-etäohjattu robottikäsi, HAMK",
       "composite": {
-        "aspect": 0.973,
+        "aspect": 1.1,
         "columns": [
           {
             "flex": 1,
@@ -75,21 +75,21 @@
               {
                 "type": "video",
                 "src": "parts/robot_arm_vr_presentation.mp4",
-                "flex": 2.157
+                "flex": 1
               },
               {
                 "type": "youtube",
                 "id": "h_51Ax6QHcA",
                 "start": 0,
                 "end": 20,
-                "flex": 0.65,
+                "flex": 1,
                 "caption_en": "Video: Juha Piilola – “Muikunperkuu koneella” (YouTube)",
                 "caption_fi": "Video: Juha Piilola – ”Muikunperkuu koneella” (YouTube)"
               }
             ]
           },
           {
-            "flex": 1.735,
+            "flex": 1,
             "panels": [
               {
                 "type": "image",
